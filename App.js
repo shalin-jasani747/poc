@@ -14,101 +14,29 @@ import {
   View,
   Text,
   StatusBar,
+  Button,
 } from 'react-native';
+import { LogLevel, RNFFmpeg } from 'react-native-ffmpeg';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const CreateVideo = () => RNFFmpeg.executeWithArguments(["-i", "/Users/shalin.jasani/Documents/AudioVideoMixinPOC/longVideo.mp4", "-i", "/Users/shalin.jasani/Documents/AudioVideoMixinPOC/audio.mp4", "-c", "copy", "-map", "0:v:0", "-map", "1:a:0", "/Users/shalin.jasani/Documents/AudioVideoMixinPOC/assets/simpleVideo.mp4"]).then(result => console.log("FFmpeg process exited with rc " + result.rc));
+
+const CreateLoopVideo = () => RNFFmpeg.execute("-stream_loop 2 -i /Users/shalin.jasani/Documents/AudioVideoMixinPOC/video.mp4 -i /Users/shalin.jasani/Documents/AudioVideoMixinPOC/audio.mp4 -c copy -map 0:v:0 -map 1:a:0 /Users/shalin.jasani/Documents/AudioVideoMixinPOC/assets/loopVideo.mp4").then(result => console.log("FFmpeg process exited with rc " + result.rc));
 
 const App: () => React$Node = () => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <View style={styles.container}>
+      <Button title="Create Video" onPress={() => CreateVideo()} />
+      <Button title="Create Loop Video" onPress={() => CreateLoopVideo()} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 export default App;
